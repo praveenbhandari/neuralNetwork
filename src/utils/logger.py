@@ -1,10 +1,12 @@
 import logging
 import os
+from src.utils.global_var import project_name
 
-
-def setup_logger(log_file_path='./logs/output_log.txt'):
-    os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
+def setup_logger(project_name=project_name, log_filename='training_log.txt'):
     
+    log_file_path = os.path.join('./output', project_name, './log', log_filename)
+    os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
+  
     logger = logging.getLogger() 
     logger.setLevel(logging.DEBUG)
 

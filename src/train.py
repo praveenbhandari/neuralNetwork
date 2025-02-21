@@ -61,7 +61,7 @@ logger=setup_logger()
     # logger.addHandler(console_handler)
 
     # return logger
-def main(config_path, output_dir,project_name):
+def main(config_path,project_name):
     """
     Main function that will have training loop, used for validating our custom NN structure.
 
@@ -86,23 +86,23 @@ def main(config_path, output_dir,project_name):
     # -------------
     # Load and make sure we have a valid config
     project_path = Path(project_name)
-    project_path.mkdir(parents=True, exist_ok=True)  # Ensure the project directory is created
-    output_dir = project_path / output_dir
+    # project_path.mkdir(parents=True, exist_ok=True)  # Ensure the project directory is created
+    # output_dir = project_path / output_dir
     
-    config = load_config(config_path,output_dir)
+    config = load_config(config_path)
     # TODO: validate_config(config)
     # os.mkdir(proje)
     # Create output directory
-    if Path(output_dir).exists():
+    if Path(project_path).exists():
         if config['overwrite_output_dir']:
             logger.info(f'NOTE - overwrite_output_dir is set to True (change this in config if desired), so deleting existing output directory...')
             print(f'NOTE - overwrite_output_dir is set to True (change this in config if desired), so deleting existing output directory...')
-            shutil.rmtree(output_dir)
+            shutil.rmtree(project_path)
         else:
             logger.info('ERROR - Output Directory exists')
             
             raise FileExistsError('ERROR - Output Directory exists')
-    output_dir = Path(output_dir)
+    output_dir = Path(project_path)
     output_dir.mkdir(parents=True)
 
 
@@ -363,18 +363,19 @@ def main(config_path, output_dir,project_name):
 #             break
 #         else:
 #           manage_rerun_update(rerun_or_update, base_path)
-
+from src.utils.global_var import project_name
 if __name__ == "__main__":
     # Call clear_seed at the beginning of the script
     # clear_seed()
     args = get_args()
-    log_file_path = os.path.join('./output', 'training_log.txt')
-    setup_logger(log_file_path)
+    # log_file_path = os.path.join(project_name, 'training_log.txt')
+    setup_logger(project_name)
 
 
     # SWITCH THESE ONCE DONE DEBUGGING
     # main(args.base_path, args.custom_run)
     # main(args.config_path, args.output_dir)
     main(config_path='/Users/praveenbhandari/Desktop/NN/NN/configs/example_config.json',
-         output_dir='/Users/praveenbhandari/Desktop/NN/out', project_name="test")
+        #  output_dir='/Users/praveenbhandari/Desktop/NN/out', 
+         project_name=project_name)
  

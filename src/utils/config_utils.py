@@ -6,10 +6,10 @@ from argparse import ArgumentParser
 from tqdm import tqdm
 
 from src.utils.logger import setup_logger
-
+from src.utils.global_var import project_name
 logger=setup_logger()
 
-def load_config(config_path, output_dir):
+def load_config(config_path):
 
     logger.debug(f'Loading configuration from {config_path}')
     
@@ -22,8 +22,11 @@ def load_config(config_path, output_dir):
         # logger.debug(f'Config loaded: {config}')
         logger.debug(f"Config loaded:\n{json.dumps(config, indent=4)}")
         
+    # os.makedirs(output_dir, exist_ok=True)
+    output_dir = Path('./output') / project_name
     os.makedirs(output_dir, exist_ok=True)
-    config_copy_path = Path(output_dir) / 'config.json'
+    
+    config_copy_path = output_dir / 'config.json'
     with open(config_copy_path, 'w') as f:
         json.dump(config, f, indent=4)
         logger.debug(f'Config saved at {config_copy_path}')

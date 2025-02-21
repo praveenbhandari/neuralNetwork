@@ -4,7 +4,8 @@ from tqdm import tqdm
 import os
 
 from src.utils.logger import setup_logger
-
+import pandas as pd
+from src.utils.global_var import project_name
 logger=setup_logger()
 # logger=logging.getLogger()
 # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -45,20 +46,26 @@ def generate_data(func, num_points, train_test_split, apply_norm):
     # print(x_train[0], y_train[0])
     # print(x_val[0], y_val[0])
     # print(x_test[0], y_test[0])
-    # np.savetxt(os.path.join('./output/', 'x_train.csv'), x_train, delimiter=',')
-    # np.savetxt(os.path.join('./output/', 'y_train.csv'), y_train, delimiter=',')
-    # np.savetxt(os.path.join('./output/', 'x_val.csv'), x_val, delimiter=',')
-    # np.savetxt(os.path.join('./output/', 'y_val.csv'), y_val, delimiter=',')
-    # np.savetxt(os.path.join('./output/', 'x_test.csv'), x_test, delimiter=',')
-    # np.savetxt(os.path.join('./output/', 'y_test.csv'), y_test, delimiter=',')
+    output_dir = './output/'+project_name+'/data'
+    os.makedirs(output_dir, exist_ok=True)
 
-    # # Save as .npy
-    # np.save(os.path.join('./output/', 'x_train.npy'), x_train)
-    # np.save(os.path.join('./output/', 'y_train.npy'), y_train)
-    # np.save(os.path.join('./output/', 'x_val.npy'), x_val)
-    # np.save(os.path.join('./output/', 'y_val.npy'), y_val)
-    # np.save(os.path.join('./output/', 'x_test.npy'), x_test)
-    # np.save(os.path.join('./output/', 'y_test.npy'), y_test)
+    pd.DataFrame(x_train).to_csv(os.path.join(output_dir, 'x_train.csv'), index=False)
+    pd.DataFrame(y_train).to_csv(os.path.join(output_dir, 'y_train.csv'), index=False)
+    pd.DataFrame(x_val).to_csv(os.path.join(output_dir, 'x_val.csv'), index=False)
+    pd.DataFrame(y_val).to_csv(os.path.join(output_dir, 'y_val.csv'), index=False)
+    pd.DataFrame(x_test).to_csv(os.path.join(output_dir, 'x_test.csv'), index=False)
+    pd.DataFrame(y_test).to_csv(os.path.join(output_dir, 'y_test.csv'), index=False)
+    
+
+    #TODO : save this files in the folder and then move this files to project_name_folder
+
+    # Save data as Numpy files
+    np.save(os.path.join(output_dir, 'x_train.npy'), x_train)
+    np.save(os.path.join(output_dir, 'y_train.npy'), y_train)
+    np.save(os.path.join(output_dir, 'x_val.npy'), x_val)
+    np.save(os.path.join(output_dir, 'y_val.npy'), y_val)
+    np.save(os.path.join(output_dir, 'x_test.npy'), x_test)
+    np.save(os.path.join(output_dir, 'y_test.npy'), y_test)
     logger.debug(f'Sample x_train: {x_train[0]}, y_train: {y_train[0]}')
     logger.debug(f'Sample x_val: {x_val[0]}, y_val: {y_val[0]}')
     logger.debug(f'Sample x_test: {x_test[0]}, y_test: {y_test[0]}')
